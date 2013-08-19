@@ -1,0 +1,13 @@
+{
+	"name": "{%= pkg.title %}",
+	"version": "<%= pkg.version %>",
+	"dependencies": {
+	},
+	"ignore": [
+		"node_modules",
+		"components",
+		"lib"
+	],
+	"exportsOverride": {
+	}
+}
