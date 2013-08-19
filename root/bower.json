@@ -1,6 +1,6 @@
 {
-	"name": "{%= pkg.title %}",
-	"version": "<%= pkg.version %>",
+	"name": "{%= title %}",
+	"version": "{%= version %}",
 	"dependencies": {
 	},
 	"ignore": [

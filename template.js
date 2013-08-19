@@ -33,7 +33,8 @@ exports.template = function( grunt, init, done ) {
 		init.prompt( 'author_name' ),
 		init.prompt( 'author_email' ),
 		init.prompt( 'author_url' ),
-		init.prompt( 'github_stub', 'substancedev/grunt-wp-theme' )
+		init.prompt( 'repository' ),
+		init.prompt( 'bugs' ),
 		{
 			name: 'css_type',
 			message: 'CSS Preprocessor: Will you use "Sass", "LESS", or "none" for CSS with this project?',
@@ -65,15 +66,6 @@ exports.template = function( grunt, init, done ) {
 		// An additional value that won't conflict with NodeUnit unit tests.
 		props.js_test_safe_name = props.js_safe_name === 'test' ? 'myTest' : props.js_safe_name;
 		props.js_safe_name_caps = props.js_safe_name.toUpperCase();
-
-		props.repository = {
-			'type': 'git',
-			'url': 'git://github.com/' + props.github_stub + '.git'
-		}
-		
-		props.bugs = {
-			'url': 'https://github.com/' + props.github_stub + '/issues'
-		}
 
 		// Files to copy and process
 		var files = init.filesToCopy( props );
