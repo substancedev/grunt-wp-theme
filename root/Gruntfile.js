@@ -22,7 +22,6 @@ module.exports = function( grunt ) {
 				banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
 					' * <%= pkg.homepage %>\n' +
 					' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-					' * Licensed GPLv2+' +
 					' */\n'
 			},
 			{%= js_safe_name %}: {
@@ -60,7 +59,6 @@ module.exports = function( grunt ) {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
 						' * <%= pkg.homepage %>\n' +
 						' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-						' * Licensed GPLv2+' +
 						' */\n',
 					mangle: {
 						except: ['jQuery']
@@ -93,7 +91,6 @@ module.exports = function( grunt ) {
 				banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
 					' * <%= pkg.homepage %>\n' +
 					' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-					' * Licensed GPLv2+' +
 					' */\n'
 			},
 			minify: {

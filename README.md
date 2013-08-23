@@ -81,4 +81,4 @@ You should only ever be modifying script files in the `/js/src` directory.  Grun
 
 ### Images
 
-The `/img/src` directory exists only to allow you to keep track of source files (like PSDs or separate images that have been merged into sprites).  This helps keep source files under version control, and allows you to bundle them with the distribution of your new GPL plugin.
+The `/img/src` directory exists only to allow you to keep track of source files (like PSDs or separate images that have been merged into sprites).
