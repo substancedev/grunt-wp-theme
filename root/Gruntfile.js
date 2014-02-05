@@ -1,5 +1,16 @@
+'use strict';
+
+/*
+var LIVERELOAD_PORT = 35729;
+var lrSnippet = require('connect-livereload')({
+	port: LIVERELOAD_PORT
+});
+var mountFolder = function (connect, dir) {
+	return connect.static(require('path').resolve(dir));
+};
+*/
+
 module.exports = function( grunt ) {
-	'use strict';
 
 	// Load all grunt tasks
 	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
@@ -9,12 +20,39 @@ module.exports = function( grunt ) {
 		pkg: grunt.file.readJSON( 'package.json' ),
 		dirs: {
 			bower: './bower_components',
+			assets: './assets',
+			css: '<%= dirs.assets %>/css',
 			{% if ('sass' === css_type) { %}
-			sass: './assets/scss',
+			sass: '<%= dirs.css %>/sass',
 			{% } else if ('less' === css_type) { %}
-			less: './assets/less',
+			less: '<%= dirs.css %>/less',
 			{% } %}
-			js: './assets/js'
+			js: '<%= dirs.assets %>/js',
+			vendor: '<%= dirs.assets %>/vendor'
+		},
+		connect: {
+			options: {
+				port: 9191,
+				hostname: '*'
+			},
+			livereload: {
+				options: {
+					middleware: function (connect) {
+						return [lrSnippet, mountFolder(connect, 'app')];
+					}
+				}
+			}
+		},
+		bower: {
+			install: {
+				options: {
+					cleanup: true,
+					copy: true,
+					install: true,
+					layout: 'byType',
+					targetDir: '<%= dirs.vendor %>'
+				}
+			}
 		},
 		concat: {
 			options: {
@@ -24,18 +62,30 @@ module.exports = function( grunt ) {
 					' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
 					' */\n'
 			},
+			head: {
+				src: [
+					'<%= dirs.js %>/src/head.js'
+				],
+				dest: '<%= dirs.js %>/head.js'
+			},
 			{%= js_safe_name %}: {
 				src: [
-					'assets/js/src/{%= js_safe_name %}.js'
+					'<%= dirs.js %>/src/{%= js_safe_name %}.js'
 				],
-				dest: 'assets/js/{%= js_safe_name %}.js'
+				dest: '<%= dirs.js %>/{%= js_safe_name %}.js'
+			},
+			oldIE : {
+				src: [
+				
+				],
+				dest: '<%= dirs.js %>/ie.js'
 			}
 		},
 		jshint: {
 			browser: {
 				all: [
-					'assets/js/src/**/*.js',
-					'assets/js/test/**/*.js'
+					'<%= dirs.js %>/src/**/*.js',
+					'<%= dirs.js %>/test/**/*.js'
 				],
 				options: {
 					jshintrc: '.jshintrc'
@@ -48,12 +98,13 @@ module.exports = function( grunt ) {
 				options: {
 					jshintrc: '.gruntjshintrc'
 				}
-			}   
+			}
 		},
 		uglify: {
 			all: {
 				files: {
-					'assets/js/{%= js_safe_name %}.min.js': ['assets/js/{%= js_safe_name %}.js']
+					'<%= dirs.js %>/head.min.js': ['<%= dirs.js %>/head.js'],
+					'<%= dirs.js %>/{%= js_safe_name %}.min.js': ['<%= dirs.js %>/{%= js_safe_name %}.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -66,22 +117,28 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
-		test:   {
-			files: ['assets/js/test/**/*.js']
+		test:	 {
+			files: ['<%= dirs.js %>/test/**/*.js']
 		},
 		{% if ('sass' === css_type) { %}
-		sass:   {
+		sass:	 {
+			options: {
+				compass: false,
+				loadPath: [
+					'<%= dirs.vendor %>/scss'
+				]
+			},
 			all: {
 				files: {
-					'assets/css/{%= js_safe_name %}.css': 'assets/css/sass/{%= js_safe_name %}.scss'
+					'<%= dirs.css %>/{%= js_safe_name %}.css': '<%= dirs.sass %>/{%= js_safe_name %}.scss'
 				}
 			}
 		},
 		{% } else if ('less' === css_type) { %}
-		less:   {
+		less:	 {
 			all: {
 				files: {
-					'assets/css/{%= js_safe_name %}.css': 'assets/css/less/{%= js_safe_name %}.less'
+					'<%= dirs.css %>/{%= js_safe_name %}.css': '<%= dirs.less %>/{%= js_safe_name %}.less'
 				}
 			}
 		},
@@ -96,59 +153,54 @@ module.exports = function( grunt ) {
 			minify: {
 				expand: true,
 				{% if ('sass' === css_type || 'less' === css_type) { %}
-				cwd: 'assets/css/',
+				cwd: '<%= dirs.css %>/',
 				src: ['{%= js_safe_name %}.css'],
 				{% } else { %}
-				cwd: 'assets/css/src/',
+				cwd: '<%= dirs.css %>/src/',
 				src: ['{%= js_safe_name %}.css'],
 				{% } %}
-				dest: 'assets/css/',
+				dest: '<%= dirs.css %>/',
 				ext: '.min.css'
 			}
 		},
-		watch:  {
+		watch:	{
+			options: {
+				livereload: true,
+				files: ['<%= dirs.css %>/*.css']
+			},
+			markup: {
+				files: ['*.html','*.php','includes/*.php','partials/*.php']
+			},
 			{% if ('sass' === css_type) { %}
 			sass: {
-				files: ['assets/css/sass/*.scss'],
-				tasks: ['sass', 'cssmin'],
-				options: {
-					debounceDelay: 500
-				}
+				files: ['<%= dirs.sass %>/**/*.scss'],
+				tasks: ['sass', 'cssmin']
 			},
 			{% } else if ('less' === css_type) { %}
 			less: {
-				files: ['assets/css/less/*.less'],
-				tasks: ['less', 'cssmin'],
-				options: {
-					debounceDelay: 500
-				}
+				files: ['<%= dirs.less %>/**/*.less'],
+				tasks: ['less', 'cssmin']
 			},
 			{% } else { %}
 			styles: {
-				files: ['assets/css/src/*.css'],
-				tasks: ['cssmin'],
-				options: {
-					debounceDelay: 500
-				}
+				files: ['<%= dirs.css %>/src/*.css'],
+				tasks: ['cssmin']
 			},
 			{% } %}
 			scripts: {
-				files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
-				tasks: ['jshint', 'concat', 'uglify'],
-				options: {
-					debounceDelay: 500
-				}
+				files: ['<%= dirs.js %>/src/**/*.js', '<%= dirs.vendror/**/*.js'],
+				tasks: ['jshint', 'concat', 'uglify']
 			}
 		}
 	} );
 
 	// Default task.
 	{% if ('sass' === css_type) { %}
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'cssmin'] );
+	grunt.registerTask( 'default', ['bower', 'jshint', 'concat', 'uglify', 'sass', 'cssmin'] );
 	{% } else if ('less' === css_type) { %}
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'less', 'cssmin'] );
+	grunt.registerTask( 'default', ['bower', 'jshint', 'concat', 'uglify', 'less', 'cssmin'] );
 	{% } else { %}
-	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'cssmin'] );
+	grunt.registerTask( 'default', ['bower', 'jshint', 'concat', 'uglify', 'cssmin'] );
 	{% } %}
 
 	grunt.util.linefeed = '\n';

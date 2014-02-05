@@ -1,0 +1,13 @@
+/**
+ * Base
+ */
+
+@import "font-face";
+@import "typography";
+
+html { font-size: 100%; }
+
+* {
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}

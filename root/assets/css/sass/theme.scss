@@ -4,3 +4,11 @@
 *
 * Copyright (c) {%= grunt.template.today('yyyy') %} {%= author_name %}
 */
+
+@import "global/global";
+
+@import "base/base";
+
+@import "layout/layout";
+
+@import "components/components";

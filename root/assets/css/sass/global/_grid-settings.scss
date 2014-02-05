@@ -1,0 +1,22 @@
+/*
+@import "neat/neat-helpers";
+
+$visual-grid: false;
+
+$column: 125px;
+$fg-column: 125px;
+$gutter: 50px;
+$fg-gutter: 50px;
+$grid-columns: 6;
+$fg-max-columns: 6;
+$max-width: em( 1000, 18 );
+$border-box-sizing: false;
+$default-layout-direction: LTR;
+
+$tablet: new-breakpoint(max-width 768px 8);
+$mobile: new-breakpoint(max-width 480px 4);
+
+$half-gutter: ( $gutter / 2 );
+$col-width: $column + $gutter;
+
+*/

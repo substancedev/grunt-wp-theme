@@ -1,0 +1,140 @@
+/**
+ * Mixins
+ */
+
+// @import "bourbon/bourbon";
+// @import "grid-settings";
+// @import "neat/neat";
+
+// =Site Mixins
+// =Utility Classes
+
+// @extends;
+
+// Image Replacement
+%ir {
+	background-color: transparent;
+	border: 0;
+	overflow: hidden;
+	/* IE 6/7 fallback */
+	*text-indent: -9999px;
+
+	&:before {
+		content: "";
+		display: block;
+		width: 0;
+		height: 150%;
+	}
+}
+
+
+// Hide from both screenreaders and browsers: h5bp.com/u
+
+%hidden {
+	display: none !important;
+	visibility: hidden;
+}
+
+// Hide only visually, but have it available for screenreaders: h5bp.com/v
+
+%visuallyhidden {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+
+
+// Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p
+
+%focusable:active,
+%focusable:focus {
+	clip: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	position: static;
+	width: auto;
+
+	@extend %visuallyhidden;
+}
+
+// Hide visually and from screenreaders, but maintain layout
+
+%invisible {
+	visibility: hidden;
+}
+
+
+// Clearfix: contain floats
+
+%clearfix {
+
+	.lt-ie8 {
+		*zoom: 1;
+	}
+
+	&:after {
+		content: " "; /* 1 */
+		display: table; /* 2 */
+	}
+
+	&:after {
+		clear: both;
+	}
+}
+
+@mixin clearfix {
+
+	.lt-ie8 {
+		*zoom: 1;
+	}
+
+	&:before,
+	&:after {
+		content: " "; /* 1 */
+		display: table; /* 2 */
+	}
+
+	&:after {
+		clear: both;
+	}
+}
+
+
+// Make elements appear clickable
+
+%clickable {
+	cursor: pointer;
+}
+
+%no-list {
+	&,
+	& ul {
+		margin: 0;
+		padding: 0;
+		
+		list-style: none;
+		
+		-webkit-margin-before: 0;
+		-webkit-margin-after: 0;
+		-webkit-margin-start: 0;
+		-webkit-margin-end: 0;
+		-webkit-padding-start: 0;
+	}
+	
+	li { list-style-type: none; }
+}
+
+// Helper class to fix some Mozilla Flexbox issues. See _flexbox.scss
+
+@-moz-document url-prefix() {
+	%mozbox {
+		width: 100%;
+		-moz-box-sizing: border-box;
+	}
+}

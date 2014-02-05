@@ -2,6 +2,12 @@
 	"name": "{%= title %}",
 	"version": "{%= version %}",
 	"dependencies": {
+		/*
+		"bourbon": "~3.1.8",
+		"neat": "~1.5.0",
+		"normalize-scss": "~2.1.3",
+		"modernizr": "~2.7.1"
+		*/
 	},
 	"ignore": [
 		"node_modules",
@@ -9,5 +15,16 @@
 		"lib"
 	],
 	"exportsOverride": {
+		/*
+		"normalize-scss": {
+			"scss": "_normalize.scss"
+		},
+		"bourbon": {
+			"scss": "app/assets/stylesheets"
+		},
+		"neat": {
+			"scss": "app/assets/stylesheets"
+		}
+		*/
 	}
 }
